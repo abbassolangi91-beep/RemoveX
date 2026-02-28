@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RemoveX</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+      color: #333;
+    }
+
+    nav a {
+      color: #333;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #007bff;
+    }
+
+    .container {
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      margin: 8rem auto 2rem;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+      animation: slideIn 1s ease-in-out;
+    }
+
+    .upload-section {
+      margin-bottom: 2rem;
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    .upload-label {
+      display: inline-block;
+      background: #007bff;
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      border: none;
+    }
+
+    .upload-label:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+
+    #file-input {
+      display: none;
+    }
+
+    .preview-section {
+      margin-top: 2rem;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .preview-image {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .preview-image:hover {
+      transform: scale(1.02);
+    }
+
+    .download-btn {
+      display: none;
+      margin-top: 2rem;
+      background: #28a745;
+      color: #fff;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+
+    .download-btn:hover {
+      background: #218838;
+      transform: scale(1.05);
+    }
+
+    .loading {
+      display: none;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #007bff;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .error {
+      color: #dc3545;
+      margin-top: 1.5rem;
+      font-size: 1rem;
+    }
+
+    .drag-drop-text {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* Info Section */
+    .info-section {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      max-width: 1200px;
+      width: 100%;
+      margin: 2rem auto;
+      text-align: center;
+    }
+
+    .info-cards {
+      display: flex;
+      justify-content: space-around;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      padding: 2rem;
+      width: 22%;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .card ul li {
+      margin-bottom: 0.5rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>RemoveX</h1>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#info">Why Us</a>
+  </nav>
+</header>
+
+<!-- Main Container -->
+<div class="container" id="home">
+  <h2>Remove Background in One Click</h2>
+  <div class="upload-section">
+    <label for="file-input" class="upload-label">Upload Image</label>
+    <input type="file" id="file-input" accept="image/*" />
+    <div class="drag-drop-text">or drag and drop an image</div>
+  </div>
+  <div class="preview-section">
+    <img id="preview" class="preview-image" src="" alt="Preview" />
+  </div>
+  <button id="download-btn" class="download-btn">Download Result</button>
+  <div class="loading" id="loading">Processing...</div>
+  <div class="error" id="error"></div>
+</div>
+
+<!-- Info Section Replacing Pricing -->
+<div class="info-section" id="info">
+  <h2>Why Choose RemoveX?</h2>
+  <div class="info-cards">
+
+    <div class="card">
+      <h3>⚡ Instant Processing</h3>
+      <ul>
+        <li>Remove background in seconds</li>
+        <li>No editing skills needed</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🤖 AI Powered</h3>
+      <ul>
+        <li>Advanced AI detection</li>
+        <li>Accurate edge cutting</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🖼️ High Quality Output</h3>
+      <ul>
+        <li>Transparent PNG download</li>
+        <li>HD quality results</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>📱 Works Everywhere</h3>
+      <ul>
+        <li>Mobile friendly</li>
+        <li>Desktop supported</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const fileInput = document.getElementById('file-input');
+  const previewImage = document.getElementById('preview');
+  const downloadBtn = document.getElementById('download-btn');
+  const loading = document.getElementById('loading');
+  const error = document.getElementById('error');
+  const container = document.querySelector('.container');
+
+  // Drag and Drop
+  container.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    container.style.backgroundColor = 'rgba(0, 123, 255, 0.1)';
+  });
+
+  container.addEventListener('dragleave', () => {
+    container.style.backgroundColor = '#fff';
+  });
+
+  container.addEventListener('drop', (e) => {
+    e.preventDefault();
+    container.style.backgroundColor = '#fff';
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+
+  fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) handleFile(file);
+  });
+
+  async function handleFile(file) {
+    try {
+      loading.style.display = 'block';
+      error.textContent = '';
+
+      // Convert image to base64
+      const base64 = await toBase64(file);
+
+      // Call Remove.bg API
+      const result = await removeBackground(base64);
+
+      // Show result
+      previewImage.src = result;
+      downloadBtn.style.display = 'block';
+      downloadBtn.onclick = () => downloadImage(result);
+
+    } catch (err) {
+      error.textContent = 'Error processing image. Please try again.';
+      console.error(err);
+    } finally {
+      loading.style.display = 'none';
+    }
+  }
+
+  function toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  async function removeBackground(imageBase64) {
+    const apiKey = '7FvGccvy3rRGbmnVgBMTf9Xs';
+    const url = 'https://api.remove.bg/v1.0/removebg';
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-Api-Key': apiKey,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        image_file_b64: imageBase64,
+        size: 'auto',
+      }),
+    });
+
+    if (!response.ok) throw new Error('Failed to remove background');
+
+    const data = await response.blob();
+    return URL.createObjectURL(data);
+  }
+
+  function downloadImage(imageUrl) {
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = 'background-removed.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+</script>
+</body>
+</html>
